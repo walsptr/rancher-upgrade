@@ -11,7 +11,14 @@ repo: https://kubernetes.github.io/autoscaler
 After the repo is added, deploy the autoscaler helm chart on the RKE2 cluster
 namespace: kube-system
 project : System
-helm chart values override as below.
+
+# add repo helm
+helm repo add autoscaler https://kubernetes.github.io/autoscaler
+
+# template
+helm template autoscaler autoscaler/cluster-autoscaler -n kube-system > values.yaml
+
+# helm chart values override as below.
 autoDiscovery:
   clusterName: cluster-autoscale-demo
 
@@ -22,6 +29,13 @@ extraVolumeSecrets:
   cluster-autoscaler-cloud-config:
     mountPath: /config
     name: cluster-autoscaler-cloud-config
+
+extraArgs:
+  scale-down-utilization-threshold: 0.8
+  scale-down-unneeded-time: 1m
+  scale-down-delay-after-add: 1m
+# install
+helm install autoscaler autoscaler/cluster-autoscaler --values values.yaml
 ```
 
 ```
