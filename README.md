@@ -57,3 +57,29 @@ These annotations should be positioned like this part of the YAML.
         workerRole: true
 
 ```
+
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sleep
+  labels:
+    app: sleep
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: sleep
+  template:
+    metadata:
+      labels:
+        app: sleep
+    spec:
+      containers:
+        - image: wardsco/sleep
+          name: sleep
+          imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              cpu: 1
+```
